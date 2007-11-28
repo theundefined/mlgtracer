@@ -1,0 +1,17 @@
+#!/bin/bash
+progname=`basename $0`
+targets=traceroute.kei.router
+
+if [ "$progname" == "lib.kei" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+
+wget -q --post-data "host=$address" http://www.kei.pl/?stronka=onas/analizatrasy -O - | \
+	vilistextum - - | \
+	grep -A 100 "Przebieg" |
+	head -n -26
+#	sed -e's/<[^>]*>//g'
+

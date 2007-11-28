@@ -1,0 +1,13 @@
+#!/bin/sh
+targets="traceroute.xnet.router"
+
+if [ "$progname" == "lib.xnet" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+
+wget -q http://www.pl-ix.pl/cgi-bin/trace.cgi?host=$address -O - | \
+	grep -A 100 "traceroute to" | \
+	sed -e's/<[^>]*>//g' -e 's/&nbsp;/ /g'

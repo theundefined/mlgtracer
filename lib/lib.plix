@@ -1,0 +1,34 @@
+#!/bin/sh
+progname=`basename $0`
+# targets="bgp.plix.{wro,kra,waw}-rs{1,2}"
+# wro - nie dziala
+targets="bgp.plix.{kra,waw}-rs{1,2}"
+
+if [ "$progname" == "lib.plix" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+routername=`echo $progname |cut -f 3 -d .`
+
+case "$routername" in
+	wro-rs1)router=0
+	;;
+	wro-rs2)router=1
+	;;
+	waw-rs1)router=2
+	;;
+	waw-rs2)router=3
+	;;
+	kra-rs1)router=4
+	;;
+	kra-rs2)router=5
+	;;
+esac
+
+wget -q --post-data "addr=$address&query=0&action=dobgp&m1=7&router=$router" http://www.pl-ix.pl/tools.asp -O - | \
+	grep -A 100 flags | grep -B 100 '/' |grep -B 100 SUPPORT |head -n -8 |\
+	sed -e's/<[^>]*>//g'
+

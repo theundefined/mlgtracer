@@ -1,0 +1,14 @@
+#!/bin/bash
+progname=`basename $0`
+targets=traceroute.home.router
+
+if [ "$progname" == "lib.home" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+
+wget -q --post-data "addr=$address" http://home.pl/test -O - |grep -A 100 '<pre>' |grep -B 100 '</pre>' \
+	| sed -e's/<[^>]*>//g'
+

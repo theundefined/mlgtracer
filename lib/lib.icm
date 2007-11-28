@@ -1,0 +1,16 @@
+#!/bin/bash
+progname=`basename $0`
+targets={ping,traceroute,route,bgp}.icm.{icm-c6,icm-r1,icm-r2,icm-s4,kp-r1}
+
+if [ "$progname" == "lib.icm" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+routername=`echo $progname |cut -f 3 -d .`
+
+wget -q --post-data "service=$service&address=$address&routername=$routername" http://tools.net.icm.edu.pl/lg/ -O - \
+	| sed -e's/<[^>]*>//g'
+

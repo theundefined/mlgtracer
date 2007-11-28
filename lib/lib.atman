@@ -1,0 +1,31 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{ping,traceroute}.atm.{global,poland,tp,business,acx} bgp.atm.acx"
+
+if [ "$progname" == "lib.atman" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+routername=`echo $progname |cut -f 3 -d .`
+
+case $routername in
+	global) router=Transit.Global
+		;;
+	poland) router=Transit.Poland
+		;;
+	tp) router=Transit.TP
+		;;
+	business) router=Business.Internet
+		;;
+	acx) router=AC-X
+		;;
+esac
+
+[ "$service" == "traceroute" ] && service=trace
+
+wget -q "http://lg.atman.pl/lg/lg.cgi?query=$service&protocol=IPv4&addr=$address&router=$router"  -O - \
+	| sed -e's/<[^>]*>//g'
+

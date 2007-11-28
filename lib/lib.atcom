@@ -1,0 +1,16 @@
+#!/bin/bash
+progname=`basename $0`
+targets=traceroute.atcom.router
+
+if [ "$progname" == "lib.atcom" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+
+wget -q --post-data "host=$address" http://www.atcom.net.pl/cgi-bin/traceroute.pl -O - | \
+	grep -A 100 "Traceroute to" | \
+	sed -e's/<[^>]*>//g' | \
+	head -n -25
+

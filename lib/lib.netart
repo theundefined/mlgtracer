@@ -1,0 +1,14 @@
+#!/bin/bash
+progname=`basename $0`
+targets=traceroute.netart.router
+
+if [ "$progname" == "lib.netart" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+
+wget -q --post-data "Packagesexpensive=150.254.78.2" http://www.serwery.pl/serwery-netart-lacza.html -O - \
+	| sed -e's/<[^>]*>//g' |iconv -f utf-8
+
