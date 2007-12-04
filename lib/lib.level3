@@ -1,0 +1,28 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{ping,traceroute,bgp}.level3.{all,europe,northamerica,ber1,decix1,lon1,waw1}"
+
+if [ "$progname" == "lib.level3" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+routername=`echo $progname |cut -f 3 -d .`
+
+case $routername in
+	all) router="ALL sites"
+		;;
+	europe) router="ALL European sites"
+		;;
+	norhamerica) router="ALL North American sites"
+		;;
+	*) router=$routername
+		;;
+esac
+
+wget -q "http://lookingglass.level3.net/$service/$service.cgi?site=$router&target=$address"  -O - \
+	| sed -e's/<[^>]*>//g' | \
+	grep -A 100 "Show Level 3"
+
