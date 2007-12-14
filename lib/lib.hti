@@ -1,0 +1,18 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{ping,traceroute}.hti.router"
+
+if [ "$progname" == "lib.hti" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+[ "$service" == "ping" ] && query=10
+[ "$service" == "traceroute" ] && query=15
+
+wget -q --post-data "routerid=20&requestid=$query&argument=$address" http://lg.hti.pl/ -O - | \
+	grep -A 100 pre | \
+	grep -B 100 "/pre" | \
+	sed -e's/<[^>]*>//g'
