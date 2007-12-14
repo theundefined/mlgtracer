@@ -1,0 +1,36 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{ping,traceroute,bgp}.dtag.{Munich,Stuttgart}"
+
+if [ "$progname" == "lib.dtag" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+router=`echo $progname |cut -f 3 -d .`
+case $router in
+	Munich)
+	routerip=194.25.0.210
+	;;
+	Stuttgart)
+	routerip=194.25.0.206
+	;;
+esac;
+
+(
+case $service in
+	traceroute)
+	wget -q --referer=https://s-lga1.s.de.net.dtag.de/tools/traceroute.php "https://s-lga1.s.de.net.dtag.de/tools/traceroute.php?destinationIP=$address&hopCount=20&server=$routerip&exec=Execute" -O -
+	;;
+	ping)
+	wget -q --referer=https://s-lga1.s.de.net.dtag.de/tools/ping.php "https://s-lga1.s.de.net.dtag.de/tools/ping.php?host=$address&count=10&server=$routerip&exec=Execute" -O -
+	;;
+	bgp)
+	wget -q --referer=https://s-lga1.s.de.net.dtag.de/tools/lg.php --post-data="query=ip bgp&para=$address&server=$routerip&submit=Execute" https://s-lga1.s.de.net.dtag.de/tools/lg.php -O -
+	;;
+esac
+) | \
+	grep -A 100 "pre" | \
+	sed -e's/<[^>]*>//g'
