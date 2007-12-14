@@ -1,0 +1,17 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{traceroute,ping}.tiscali.{waw10,prg10,nyc10,lon11,fra10,vie20}"
+
+if [ "$progname" == "lib.tiscali" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+router=`echo $progname |cut -f 3 -d .`
+[ "$service" == "traceroute" ] && service=trace
+
+wget -q --post-data "query=$service&router=$router.ip.tiscali.net:juniper&args=$address" http://www.ip.tiscali.net/lg/lg.cgi -O - | \
+	sed -e's/<[^>]*>//g'
+
