@@ -2,7 +2,7 @@
 progname=`basename $0`
 # targets="bgp.plix.{wro,kra,waw}-rs{1,2}"
 # wro - nie dziala
-targets="bgp.plix.{kra,waw}-rs{1,2}"
+targets="{bgp,bgpre}.plix.{kra,waw}-rs{1,2}"
 
 if [ "$progname" == "lib.plix" -a "$1" == "targets" ]; then
 	echo $targets
@@ -11,6 +11,13 @@ fi
 
 address=$1
 service=`echo $progname |cut -f 1 -d .`
+case $service in
+	bgp) query=0
+	;;
+	bgpre) query=2
+	;;
+esac
+
 routername=`echo $progname |cut -f 3 -d .`
 
 case "$routername" in
@@ -28,7 +35,7 @@ case "$routername" in
 	;;
 esac
 
-wget -q --post-data "addr=$address&query=0&action=dobgp&m1=7&router=$router" http://www.pl-ix.pl/tools.asp -O - | \
+wget -q --post-data "addr=$address&query=$query&action=dobgp&m1=7&router=$router" http://www.pl-ix.pl/tools.asp -O - | \
 	grep -A 100 flags | grep -B 100 '/' |grep -B 100 SUPPORT |head -n -8 |\
 	sed -e's/<[^>]*>//g'
 

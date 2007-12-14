@@ -1,6 +1,6 @@
 #!/bin/sh
 progname=`basename $0`
-targets="{traceroute,bgp}.nask.router"
+targets="{traceroute,bgp,bgpre}.nask.router"
 
 if [ "$progname" == "lib.nask" -a "$1" == "targets" ]; then
 	echo $targets
@@ -10,6 +10,7 @@ fi
 address=$1
 service=`echo $progname |cut -f 1 -d .`
 [ "$service" == "traceroute" ] && service=tracert
+[ "$service" == "bgpre" ] && service=regex
 
 wget -q --post-data "operacja=$service&router=RR-1.core.nask.pl&dana=$address" http://www.nask.pl/cgi-bin/look.pl -O - |
 	sed -e's/<[^>]*>//g'
