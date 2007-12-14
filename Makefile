@@ -1,9 +1,9 @@
 tgz:
-	tar cvfz mlgtracer-`date +%Y%m%d%H%M`.tgz lib
+	tar cvfz ../mlgtracer-`date +%Y%m%d%H%M`.tgz lib
 
 links: clean
 	install -d links; \
-	libr="x y `ls lib/lib.*`"; \
+	libr="`ls lib/lib.*`"; \
 	for targetlib in $$libr; do \
 		for targetlink in `$$targetlib targets`; do \
 		ln -sf `pwd`/$$targetlib links/$$targetlink; \
@@ -11,4 +11,4 @@ links: clean
 	done;
 
 clean:
-	rm -rf links
+	rm -rf links lib/*~ *~

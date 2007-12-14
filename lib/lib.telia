@@ -1,0 +1,17 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{ping,traceroute,bgp}.telia.{Amsterdam,Frankfurt,London,Moscow,Paris,Prague,Vienna,Warsaw}"
+
+if [ "$progname" == "lib.telia" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+[ "$service" == "traceroute" ] && service=trace
+router=`echo $progname |cut -f 3 -d .`
+
+wget -q "http://looking-glass.telia.net/cgi-bin/lg.cgi?query=$service&protocol=IPv4&addr=$address&router=$router"  -O - \
+	| sed -e's/<[^>]*>//g' | \
+	grep -A 100 "Router: "
