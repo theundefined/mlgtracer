@@ -1,6 +1,6 @@
 #!/bin/sh
 progname=`basename $0`
-targets="{ping,traceroute,bgp}.dtag.{Munich,Stuttgart}"
+targets="{ping,traceroute,bgp,bgpre}.dtag.{Munich,Stuttgart}"
 
 if [ "$progname" == "lib.dtag" -a "$1" == "targets" ]; then
 	echo $targets
@@ -29,6 +29,9 @@ case $service in
 	;;
 	bgp)
 	wget -q --referer=https://s-lga1.s.de.net.dtag.de/tools/lg.php --post-data="query=ip bgp&para=$address&server=$routerip&submit=Execute" https://s-lga1.s.de.net.dtag.de/tools/lg.php -O -
+	;;
+	bgpre)
+	wget -q --referer=https://s-lga1.s.de.net.dtag.de/tools/lg.php --post-data="query=ip bgp regexp&para=$address&server=$routerip&submit=Execute" https://s-lga1.s.de.net.dtag.de/tools/lg.php -O -
 	;;
 esac
 ) | \
