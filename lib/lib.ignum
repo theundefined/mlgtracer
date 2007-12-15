@@ -1,0 +1,14 @@
+#!/bin/sh
+progname=`basename $0`
+targets="traceroute.ignum.router"
+
+if [ "$progname" == "lib.ignum" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+
+wget -q "http://traceroute.ignum.cz/index.pl?destination=$address&resolve=yes" -O - | \
+	vilistextum - - | \
+	grep -A 100 "^Route"
