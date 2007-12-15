@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 progname=`basename $0`
 targets=traceroute.home.router
 
