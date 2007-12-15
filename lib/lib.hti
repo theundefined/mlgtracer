@@ -13,6 +13,7 @@ service=`echo $progname |cut -f 1 -d .`
 [ "$service" == "traceroute" ] && query=15
 
 wget -q --post-data "routerid=20&requestid=$query&argument=$address" http://lg.hti.pl/ -O - | \
+	sed -e 's@result:@result:\n@g' | \
 	grep -A 100 pre | \
 	grep -B 100 "/pre" | \
 	sed -e's/<[^>]*>//g'
