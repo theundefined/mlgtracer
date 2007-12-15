@@ -16,7 +16,7 @@ service=`echo $progname |cut -f 1 -d .`
 router=`echo $progname |cut -f 3 -d .`
 
 routerid=10
-[ "$service" == "piatkowo" ] && routerid=20
+[ "$router" == "piatkowo" ] && routerid=20
 
 wget -q --post-data "routerid=$routerid&requestid=$query&argument=$address" http://lg.net.perfekt.pl/ -O - | \
 	sed -e 's@result:@result:\n@g' | \
