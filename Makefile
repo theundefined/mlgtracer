@@ -1,7 +1,9 @@
 DEST=links
 SRC=`pwd`
+DATE=`date +%Y%m%d%H%M`
 tgz:
-	tar cvfz ../mlgtracer-`date +%Y%m%d%H%M`.tgz lib
+	sed -e "s@DATA@$(DATE)@g" < mlgtracer.spec.in >mlgtracer.spec
+	tar cvfz ../mlgtracer-$(DATE).tgz lib Makefile README.* mlgtracer.spec*
 
 links: clean
 	install -d $(DEST); \
