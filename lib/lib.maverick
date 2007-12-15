@@ -1,0 +1,22 @@
+#!/bin/sh
+progname=`basename $0`
+targets="bgp.maverick.{piastlan,karolin}"
+
+if [ "$progname" == "lib.maverick" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+[ "$service" == "bgp" ] && query=40
+router=`echo $progname |cut -f 3 -d .`
+
+routerid=10
+[ "$router" == "karolin" ] && routerid=20
+
+wget -q --post-data "routerid=$routerid&requestid=$query&argument=$address" http://lg.maverick.com.pl/ -O - | \
+	sed -e 's@result:@result:\n@g' | \
+	grep -A 100 pre | \
+	grep -B 100 "/pre" | \
+	sed -e's/<[^>]*>//g'
