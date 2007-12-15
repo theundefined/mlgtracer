@@ -1,4 +1,5 @@
 #!/bin/sh
+progname=`basename $0`
 targets="traceroute.xnet.router"
 
 if [ "$progname" == "lib.xnet" -a "$1" == "targets" ]; then
