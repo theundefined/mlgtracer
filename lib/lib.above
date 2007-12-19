@@ -1,0 +1,19 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{ping,traceroute,bgp}.above.{mpr1_ams1_nl,mpr1_atl6_us,mpr1_nrt3_jp}"
+
+if [ "$progname" == "lib.above" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+router=`echo $progname |cut -f 3 -d .|tr '_' '.'`
+
+[ $service == 'traceroute' ] && service=trace
+
+wget -q --referer=http://lg.above.net/lg.cgi --post-data "query=$service&protocol=IPv4&addr=$address&prefix=32&router=$router.above.net&submit=Submit" http://lg.above.net/lg.cgi  -O - | \
+	sed -e's/<[^>]*>//g' | \
+	grep -A 500 Router:
+
