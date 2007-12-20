@@ -1,0 +1,13 @@
+#!/bin/sh
+progname=`basename $0`
+targets="traceroute.euron.router"
+
+if [ "$progname" == "lib.euron" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+
+wget -q "http://euron.pl/trace/traceroute.php?ip=$address&Submit=Enter" -O - | \
+	vilistextum - -

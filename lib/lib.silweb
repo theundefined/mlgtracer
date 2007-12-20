@@ -1,0 +1,17 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{ping,traceroute,bgp}.silweb.{Gliwice,Katowice}_AS{8508,15744}"
+
+if [ "$progname" == "lib.silweb" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+routername=`echo $progname |cut -f 3 -d . |tr '_' ' '`
+[ "$service" = "traceroute" ] && service=trace
+
+wget -q --post-data "query=$service&protocol=IPv4&router=$routername&addr=$address" http://lg.silweb.pl/lg.cgi -O - \
+	| sed -e's/<[^>]*>//g' | \
+	grep -A 300 Router:

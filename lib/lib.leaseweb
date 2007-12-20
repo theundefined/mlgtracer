@@ -1,0 +1,20 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{ping,traceroute,bgp,bgpre}.leaseweb.{TC2,SBP,EVO,ESY}"
+
+if [ "$progname" == "lib.leaseweb" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+routername=`echo $progname |cut -f 3 -d .`
+[ "$service" = "traceroute" ] && service=trace
+if [ "$service" = "bgpre" ]; then
+	service=bgp
+	address="regexp $address"
+fi
+
+wget -q --post-data "query=$service&protocol=IPv4&router=$routername R1&addr=$address" http://noc.leaseweb.nl/lg -O - \
+	| sed -e's/<[^>]*>//g'

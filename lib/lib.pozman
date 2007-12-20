@@ -1,0 +1,18 @@
+#!/bin/sh
+progname=`basename $0`
+targets={traceroute,ping}.pozman.router
+
+if [ "$progname" == "lib.pozman" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+[ "$service" == "ping" ] && query=1
+[ "$service" == "traceroute" ] && query=2
+
+wget -q --post-data "target=$address&program=$query" http://noc.man.poznan.pl/cgi-bin/noctools.cgi -O - | \
+	grep -A 100 "<PRE" | \
+	sed -e's/<[^>]*>//g'
+
