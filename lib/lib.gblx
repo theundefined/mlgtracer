@@ -1,0 +1,20 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{ping,traceroute}.gblx.{AMS2,FRA2,LON3,CDG2,ZRH1}"
+
+if [ "$progname" == "lib.gblx" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+routername=`echo $progname |cut -f 3 -d .`
+
+[ "$service" == "traceroute" ] && service=trace
+
+wget -q "http://ipstats.globalcrossing.net/dotcom/link7r.shtml?src=$routername&mode=r2h&dst=$address&type=$service"  -O - | \
+	sed -e's/<[^>]*>//g' | \
+	sed -e 's/&nbsp;//g' | \
+	sed -e 's/               //g' | \
+	grep -A 1000 Trying
