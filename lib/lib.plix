@@ -2,7 +2,7 @@
 progname=`basename $0`
 # targets="bgp.plix.{wro,kra,waw}-rs{1,2}"
 # wro - nie dziala
-targets="{bgp,bgpre}.plix.{kra,waw}-rs{1,2}"
+targets="{bgp,bgpre}.plix.waw-rs{1,2}"
 
 if [ "$progname" == "lib.plix" -a "$1" == "targets" ]; then
 	echo $targets
@@ -21,17 +21,9 @@ esac
 routername=`echo $progname |cut -f 3 -d .`
 
 case "$routername" in
-	wro-rs1)router=0
-	;;
-	wro-rs2)router=1
-	;;
 	waw-rs1)router=2
 	;;
 	waw-rs2)router=3
-	;;
-	kra-rs1)router=4
-	;;
-	kra-rs2)router=5
 	;;
 esac
 
