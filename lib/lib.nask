@@ -12,6 +12,9 @@ service=`echo $progname |cut -f 1 -d .`
 [ "$service" == "traceroute" ] && service=tracert
 [ "$service" == "bgpre" ] && service=regex
 
-wget -q --post-data "operacja=$service&router=RR-1.core.nask.pl&dana=$address" http://www.nask.pl/cgi-bin/look.pl -O - |
+wget -q \
+	--referer "http://www.nask.pl/run/n/SprawdzN" \
+	--post-data "operacja=$service&router=RR-1.core.nask.pl&dana=$address" \
+	http://www.nask.pl/cgi-bin/look.pl -O - |
 	sed -e's/<[^>]*>//g'
 
