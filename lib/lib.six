@@ -1,0 +1,22 @@
+#!/bin/sh
+progname=`basename $0`
+# targets="bgp.plix.{wro,kra,waw}-rs{1,2}"
+# wro - nie dziala
+targets="bgp.six.router {traceroute,ping}.sanet.router"
+
+if [ "$progname" == "lib.six" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+
+[ "$service" == "traceroute" ] && service=trace
+
+wget -q \
+	--referer "http://www.six.sk/lg.php" \
+	--post-data "query=$service&addr=$address&submit=Submit" http://six.bts.sk/cgi-bin/nph-lg -O - | \
+	sed -e's/<[^>]*>//g' | \
+	grep -A 100 Query:
+
