@@ -1,0 +1,5 @@
+- add common wrapper to all files - to easy change default configuration, use
+  config files itepe
+- add possibility to disable some lg - for example which doesn't allow scripted
+  use
+- add useragent field to mlgtracer/version instead of wget
