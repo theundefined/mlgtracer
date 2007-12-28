@@ -1,6 +1,6 @@
 #!/bin/sh
 progname=`basename $0`
-targets="{ping,traceroute}.atm.{global,poland,tp,business,acx} bgp.atm.acx"
+targets="{ping,traceroute}.atm.{global,poland,tp,business,acx} {bgp,bgpre}.atm.acx"
 
 if [ "$progname" == "lib.atman" -a "$1" == "targets" ]; then
 	echo $targets
@@ -25,6 +25,7 @@ case $routername in
 esac
 
 [ "$service" == "traceroute" ] && service=trace
+[ "$service" == "bgpre" ] && service=bgp-aspath
 
 wget -q "http://lg.atman.pl/lg/lg.cgi?query=$service&protocol=IPv4&addr=$address&router=$router"  -O - \
 	| sed -e's/<[^>]*>//g'
