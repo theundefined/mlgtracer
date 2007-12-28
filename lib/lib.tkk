@@ -1,0 +1,21 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{ping,traceroute,bgp,bgpre}.tkk.router"
+
+if [ "$progname" == "lib.tkk" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+
+[ $service == 'traceroute' ] && service=trace
+[ $service == 'bgpre' ] && address="regexp $address" && service=bgp
+
+wget -q \
+	--referer=http://sloniewski.pl/lg/ \
+	--post-data "query=$service&protocol=IPv4&addr=$address&prefix=32&router=TKK gw.tkk.net.pl&SUBMIT=Enter" \
+	http://sloniewski.pl/lg/ -O - | \
+	sed -e 's/<[^>]*>//g' -e 's/&gt;/>/g' | \
+	grep -A 500 Router: 
