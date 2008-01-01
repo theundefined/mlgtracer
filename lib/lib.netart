@@ -1,10 +1,8 @@
 #!/bin/sh
-
-# nie dziala
-exit
-
 progname=`basename $0`
 targets=traceroute.netart.router
+tmpcookie=`mktemp /tmp/mlgtracer.cookie.XXXXXX`
+tmpfile=`mktemp /tmp/mlgtracer.file.XXXXXX`
 
 if [ "$progname" == "lib.netart" -a "$1" == "targets" ]; then
 	echo $targets
@@ -13,6 +11,24 @@ fi
 
 address=$1
 
-wget -q --post-data "Packagesexpensive=150.254.78.2" http://www.serwery.pl/serwery-netart-lacza.html -O - \
-	| sed -e's/<[^>]*>//g' |iconv -f utf-8
+wget -q \
+	--keep-session-cookies \
+	--save-cookies $tmpcookie \
+	http://serwery.pl/serwery-netart-lacza.html -O $tmpfile
 
+wget -q \
+	--keep-session-cookies \
+	--load-cookies $tmpcookie \
+	--post-data "__clockRedirectUrl=%252Fserwery-netart-lacza.html&__clockRedirectIfTimeout=%252Fnetart-lacza-sprobuj-ponownie.html&__clockTimeout=30&__clockMsg=label_netart-lacza-czekaj&Packagesexpensive=$address&componentInstance=PK_M0169" \
+	--referer http://serwery.pl/serwery-netart-lacza.html \
+	http://serwery.pl/netart-lacza-czekaj.html -O $tmpfile
+
+wget -q \
+	--keep-session-cookies \
+	--load-cookies $tmpcookie \
+	--referer http://serwery.pl/netart-lacza-czekaj.html \
+	http://serwery.pl/serwery-netart-lacza.html -O - | \
+	iconv -f utf-8 | \
+	vilistextum - - |egrep "Host|%" |egrep -v "Hosting|Znaki"
+
+rm -f $tmpfile $tmpcookie
