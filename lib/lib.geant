@@ -1,0 +1,42 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{ping,traceroute,bgp}.geant.{fra_de,gen_ch,vie_at,ath_gr,kau_lt,lon_uk,nyc_us,bud_hu,tik_il,poz_pl,rig_lv,pra_cz,cop_dk,tal_ee,ams_nl,mad_es,par_fr,lis_pt,lux_lu,mil_it}"
+
+if [ "$progname" == "lib.geant" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+router=`echo $progname |cut -f 3 -d .|tr '_' '.'`
+tmpcookie=`mktemp /tmp/mlgtracer.cookie.XXXXXX`
+tmpfile=`mktemp /tmp/mlgtracer.file.XXXXXX`
+
+[ $service == "traceroute" ] && command="traceroute <IP_addr | FQDN>"
+[ $service == "ping" ] && command="ping <IP_addr | FQDN>"
+[ $service == "bgpre" ] && command="Show BGP AS-PATH/Regex <AS_regex>"
+[ $service == "bgp" ] && command="Show BGP Prefix <prefix> [/netmask]"
+
+wget -q \
+	--keep-session-cookies \
+	--save-cookies=$tmpcookie \
+	--referer http://stats.geant2.net/lg/ \
+	--post-data "routers=rt1.$router.geant2.net&commands=$command&args=$address" \
+	http://stats.geant2.net/lg/taskinit.jsp -O $tmpfile
+oldwww=http://stats.geant2.net/lg/taskinit.jsp
+
+while grep -q "function doIt" $tmpfile; do
+	sleep 2
+	wget -q \
+		--keep-session-cookies \
+		--load-cookies=$tmpcookie \
+		--referer $oldwww \
+		http://stats.geant2.net/lg/process.jsp -O $tmpfile
+	oldwww=http://stats.geant2.net/lg/process.jsp
+done
+
+cat $tmpfile | \
+	sed -e 's@<br>@\n@g' -e 's/<[^>]*>//g' -e 's/&nbsp;/ /g' -e 's/&gt;/>/g' | \
+	grep -A 100 Query |grep -B 100 "function displayAll"
+rm -f $tmpfile $tmpcookie
