@@ -3,3 +3,4 @@
 - add possibility to disable some lg - for example which doesn't allow scripted
   use
 - add useragent field to mlgtracer/version instead of wget
+- automate convert hostname to ip when lg need ip address
