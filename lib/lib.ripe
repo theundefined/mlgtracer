@@ -1,0 +1,24 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{ping,traceroute,bgp,bgpre}.ripe.{RRC00_Amsterdam,RRC01_LINX,RRC02_SFINX,RRC03_AMS-IX,RRC04_CIXP,RRC05_VIX,RRC06_NSPIXP2,RRC07_Netnod,RRC10_MIX,RRC11_NYIIX,RRC12_DE-CIX,RRC13_MSK-IX,RRC14_PAIX,RRC15_Sao_Paulo}"
+
+if [ "$progname" == "lib.ripe" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+router=`echo $progname |cut -f 3 -d .|cut -f 1 -d _`
+
+[ "$service" == "ping" ] && query=8
+[ "$service" == "traceroute" ] && query=7
+[ "$service" == "bgp" ] && query=1
+[ "$service" == "bgpre" ] && query=12
+
+wget -q \
+	"http://www.ris.ripe.net/cgi-bin/lg/index.cgi?rrc=${router}1&query=$query&arg=$address" -O - | \
+	sed -e's/<[^>]*>//g' | \
+	grep -A 100 ^Argument:  | \
+	grep -B 100 ^Multi
+
