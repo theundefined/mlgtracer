@@ -45,6 +45,7 @@ licencja: gpl w najnowszej wersji ;)
 
 kontakt:
 Je¿eli chcia³by¶ pomóc w rozwoju skryptologii, masz jakie¶ pomys³y na
-ulepszenia - zapraszam :)
+ulepszenia, znasz jakie¶ LG/traceroute dostêpne przez www które warto by³oby
+dorzuciæ do spisu - zapraszam :)
 
 Kontakt do mnie - http://andrzej.dopierala.name/Kontakt
