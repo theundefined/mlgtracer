@@ -1,0 +1,19 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{traceroute,bgp}.elsat.router"
+
+if [ "$progname" == "lib.elsat" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+service=`echo $progname |cut -f 1 -d .`
+
+[ "$service" == "bgp" ] && command="-A"
+[ "$service" == "traceroute" ] && command="-B"
+
+wget -q "http://mtr.elsat.net.pl/index.php?host=$address&pings=3" -O - | \
+	vilistextum - - | \
+	grep -v ^$ | \
+	grep $command 100 "BGP routing table entry"
