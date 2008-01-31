@@ -1,0 +1,18 @@
+#!/bin/sh
+progname=`basename $0`
+targets="traceroute.rafgan.router"
+
+if [ "$progname" == "lib.rafgan" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+address=$1
+
+wget -q \
+	--referer http://www.internet.rafgan.pl/TraceRoute.php \
+	--post-data "adres=$address&submit=Sprawd¼" \
+	http://www.internet.rafgan.pl/TraceRoute.php -O - | \
+	grep -A 100 pre | \
+	grep -B 100 "/pre" | \
+	sed -e's/<[^>]*>//g'
