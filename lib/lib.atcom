@@ -7,7 +7,19 @@ if [ "$progname" == "lib.atcom" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 20680
+        exit
+        ;;
+        url)
+        echo http://www.atcom.net.pl/cgi-bin/traceroute.pl
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 
 wget -q --post-data "host=$address" http://www.atcom.net.pl/cgi-bin/traceroute.pl -O - | \
 	grep -A 100 "Traceroute to" | \

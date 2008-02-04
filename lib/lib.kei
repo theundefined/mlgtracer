@@ -7,8 +7,20 @@ if [ "$progname" == "lib.kei" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
 
+case "$1" in
+        as)
+        echo 29522
+        exit
+        ;;
+        url)
+        echo http://www.kei.pl/?stronka=onas/analizatrasy
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 wget -q --post-data "host=$address" http://www.kei.pl/?stronka=onas/analizatrasy -O - | \
 	vilistextum - - | \
 	grep -A 100 "Przebieg" |

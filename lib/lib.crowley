@@ -7,7 +7,19 @@ if [ "$progname" == "lib.crowley" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 12968
+        exit
+        ;;
+        url)
+        echo http://noc.cdp.pl/
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 if [ "$service" == "traceroute" ]; then
 	url="http://noc.cdp.pl/traceroute.php?host=$address"

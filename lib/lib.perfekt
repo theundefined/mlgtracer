@@ -7,7 +7,19 @@ if [ "$progname" == "lib.perfekt" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 33868
+        exit
+        ;;
+        url)
+        echo http://lg.net.perfekt.pl
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 [ "$service" == "ping" ] && query=10
 [ "$service" == "traceroute" ] && query=15

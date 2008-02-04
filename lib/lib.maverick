@@ -7,7 +7,20 @@ if [ "$progname" == "lib.maverick" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+	as) 
+	echo 34688
+	exit
+	;;
+	url)
+	echo http://lg.maverick.com.pl/
+	exit
+	;;
+	*)
+	address=$1
+	;;
+esac
+
 service=`echo $progname |cut -f 1 -d .`
 [ "$service" == "bgpre" ] && service=bgp && address="regexp $address"
 [ "$service" == "bgp" ] && query=40

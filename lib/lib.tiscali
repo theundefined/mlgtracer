@@ -7,7 +7,19 @@ if [ "$progname" == "lib.tiscali" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 3257
+        exit
+        ;;
+        url)
+        echo http://www.ip.tiscali.net/lg/
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 router=`echo $progname |cut -f 3 -d .`
 [ "$service" == "traceroute" ] && service=trace

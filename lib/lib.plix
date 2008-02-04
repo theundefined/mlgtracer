@@ -1,7 +1,5 @@
 #!/bin/sh
 progname=`basename $0`
-# targets="bgp.plix.{wro,kra,waw}-rs{1,2}"
-# wro - nie dziala
 targets="{bgp,bgpre}.plix.waw-rs{1,2}"
 
 if [ "$progname" == "lib.plix" -a "$1" == "targets" ]; then
@@ -9,7 +7,19 @@ if [ "$progname" == "lib.plix" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 34209
+        exit
+        ;;
+        url)
+        echo http://www.pl-ix.pl/tools.asp
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 case $service in
 	bgp) query=0

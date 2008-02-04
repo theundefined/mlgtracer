@@ -7,7 +7,19 @@ if [ "$progname" == "lib.leaseweb" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 16265
+        exit
+        ;;
+        url)
+        echo http://noc.leaseweb.nl/lg
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 routername=`echo $progname |cut -f 3 -d .`
 [ "$service" = "traceroute" ] && service=trace

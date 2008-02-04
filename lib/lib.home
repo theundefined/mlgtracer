@@ -7,8 +7,20 @@ if [ "$progname" == "lib.home" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
 
+case "$1" in
+        as)
+        echo 12824
+        exit
+        ;;
+        url)
+        echo http://home.pl/test
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 wget -q --post-data "addr=$address" http://home.pl/test -O - |grep -A 100 '<pre>' |grep -B 100 '</pre>' \
 	| sed -e's/<[^>]*>//g'
 

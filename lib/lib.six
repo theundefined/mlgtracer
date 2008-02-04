@@ -9,7 +9,19 @@ if [ "$progname" == "lib.six" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 2607
+        exit
+        ;;
+        url)
+        echo http://www.six.sk/lg.php
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 
 [ "$service" == "traceroute" ] && service=trace

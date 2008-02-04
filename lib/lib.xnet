@@ -7,7 +7,19 @@ if [ "$progname" == "lib.xnet" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 34209
+        exit
+        ;;
+        url)
+        echo http://www.pl-ix.pl/tools.asp
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 
 wget -q http://www.pl-ix.pl/cgi-bin/trace.cgi?host=$address -O - | \
 	grep -A 100 "traceroute to" | \

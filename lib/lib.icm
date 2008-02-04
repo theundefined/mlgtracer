@@ -7,7 +7,19 @@ if [ "$progname" == "lib.icm" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 15396,8664,8890
+        exit
+        ;;
+        url)
+        echo http://tools.net.icm.edu.pl/lg/
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 routername=`echo $progname |cut -f 3 -d .`
 

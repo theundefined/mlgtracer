@@ -7,7 +7,19 @@ if [ "$progname" == "lib.silweb" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 8508,15744
+        exit
+        ;;
+        url)
+        echo http://lg.silweb.pl/
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 routername=`echo $progname |cut -f 3 -d . |tr '_' ' '`
 [ "$service" = "traceroute" ] && service=trace

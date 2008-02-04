@@ -7,7 +7,18 @@ if [ "$progname" == "lib.euron" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
-
+case "$1" in
+        as)
+        echo 31658
+        exit
+        ;;
+        url)
+        echo http://euron.pl/trace/
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 wget -q "http://euron.pl/trace/traceroute.php?ip=$address&Submit=Enter" -O - | \
 	vilistextum - -

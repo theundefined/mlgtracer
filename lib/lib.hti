@@ -7,7 +7,19 @@ if [ "$progname" == "lib.hti" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 20552
+        exit
+        ;;
+        url)
+        echo http://lg.hti.pl/
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 [ "$service" == "ping" ] && query=10
 [ "$service" == "traceroute" ] && query=15

@@ -7,8 +7,20 @@ if [ "$progname" == "lib.rafgan" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
 
+case "$1" in
+        as)
+        echo 31242
+        exit
+        ;;
+        url)
+        echo http://www.internet.rafgan.pl/TraceRoute.php
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 wget -q \
 	--referer http://www.internet.rafgan.pl/TraceRoute.php \
 	--post-data "adres=$address&submit=Sprawd¼" \

@@ -7,8 +7,20 @@ if [ "$progname" == "lib.ignum" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
 
+case "$1" in
+        as)
+        echo 29134
+        exit
+        ;;
+        url)
+        echo http://traceroute.ignum.cz/
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 wget -q "http://traceroute.ignum.cz/index.pl?destination=$address&resolve=yes" -O - | \
 	vilistextum - - | \
 	grep -A 100 "^Route"

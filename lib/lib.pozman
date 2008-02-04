@@ -7,7 +7,19 @@ if [ "$progname" == "lib.pozman" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 9112
+        exit
+        ;;
+        url)
+        echo http://noc.man.poznan.pl/narzedzia.html
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 [ "$service" == "ping" ] && query=1
 [ "$service" == "traceroute" ] && query=2

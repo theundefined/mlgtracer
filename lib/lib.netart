@@ -9,8 +9,20 @@ if [ "$progname" == "lib.netart" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
 
+case "$1" in
+        as)
+        echo 15967
+        exit
+        ;;
+        url)
+        echo  http://serwery.pl/serwery-netart-lacza.html
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 wget -q \
 	--keep-session-cookies \
 	--save-cookies $tmpcookie \

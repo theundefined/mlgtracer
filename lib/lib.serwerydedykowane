@@ -7,7 +7,19 @@ if [ "$progname" == "lib.serwerydedykowane" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 41079
+        exit
+        ;;
+        url)
+        echo http://serwerydedykowane.pl/infrastruktura.php
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 [ "$service" == "traceroute" ] && service=trace
 

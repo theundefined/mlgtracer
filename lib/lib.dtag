@@ -7,7 +7,19 @@ if [ "$progname" == "lib.dtag" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 3320
+        exit
+        ;;
+        url)
+        echo https://s-lga1.s.de.net.dtag.de/index.php
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 router=`echo $progname |cut -f 3 -d .`
 case $router in

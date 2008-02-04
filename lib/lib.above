@@ -6,8 +6,20 @@ if [ "$progname" == "lib.above" -a "$1" == "targets" ]; then
 	echo $targets
 	exit
 fi
+case "$1" in
+        as)
+        echo 6461
+        exit
+        ;;
+        url)
+        echo http://lg.above.net/
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 
-address=$1
 service=`echo $progname |cut -f 1 -d .`
 router=`echo $progname |cut -f 3 -d .|tr '_' '.'`
 

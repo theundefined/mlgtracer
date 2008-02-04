@@ -7,7 +7,19 @@ if [ "$progname" == "lib.elsat" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 30851
+        exit
+        ;;
+        url)
+        echo http://mtr.elsat.net.pl/
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 
 [ "$service" == "bgp" ] && command="-A"

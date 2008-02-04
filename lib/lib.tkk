@@ -7,7 +7,19 @@ if [ "$progname" == "lib.tkk" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 30975
+        exit
+        ;;
+        url)
+        echo http://sloniewski.pl/lg/
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 service=`echo $progname |cut -f 1 -d .`
 
 [ $service == 'traceroute' ] && service=trace

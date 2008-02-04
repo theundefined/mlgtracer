@@ -7,7 +7,19 @@ if [ "$progname" == "lib.gts" -a "$1" == "targets" ]; then
 	exit
 fi
 
-address=$1
+case "$1" in
+        as)
+        echo 8246
+        exit
+        ;;
+        url)
+        echo http://noc.gts.pl/
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
 action=`echo $progname |cut -f 1 -d '.'`
 
 case $action in
