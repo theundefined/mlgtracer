@@ -1,6 +1,6 @@
 #!/bin/sh
 progname=`basename $0`
-targets="{ping,traceroute,bgp}.tktelekom.{Warszawa_1,Warszawa_2,Kraków,Gdañsk,Wroc³aw,Poznañ}"
+targets="{ping,traceroute,bgp}.tktelekom.{Warszawa_1,Warszawa_2,Krakow,Gdansk,Wroclaw,Poznan}"
 
 if [ "$progname" == "lib.tktelekom" -a "$1" == "targets" ]; then
 	echo $targets
@@ -14,6 +14,6 @@ router=`echo $progname |cut -f 3 -d . |tr '_' ' '`
 
 wget -q \
 	--post-data "query=$service&protocol=IPv4&addr=$address&router=$router&SUBMIT=Submit" \
-	http://noc.tktelekom.pl/lg/  -O -  | \
+	http://lg.tktelekom.pl/  -O -  | \
 	sed -e's/<[^>]*>//g' | \
 	grep -A 100 "Router: "
