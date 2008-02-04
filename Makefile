@@ -14,5 +14,17 @@ links: clean
 		done; \
 	done;
 
+LG-list: clean
+	libr="`ls lib/lib.*`"; \
+	     ( \
+		for targetlib in $$libr; do \
+		     	aslist=`$$targetlib as |tr ',' ' ' `; \
+			url=`$$targetlib url` ; \
+			for as in $$aslist; do \
+				echo $$as $$url; \
+			done; \
+	 	done; \
+	      ) |sort -n |uniq > LG-list;
+
 clean:
-	rm -rf $(DEST) lib/*~ *~
+	rm -rf $(DEST) lib/*~ *~ LG-list

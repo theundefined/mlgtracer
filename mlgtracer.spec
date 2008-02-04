@@ -1,5 +1,5 @@
 # $Revision$, $Date$
-%define	_released	200712151404
+%define	_released	200801312023
 Summary:	Multi Looking Glass Tracer
 Name:		mlgtracer
 Version:	0.%{_released}
@@ -57,3 +57,6 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log$
+Revision 1.1  2007/12/15 13:11:45  undefine
+- spec file
+
