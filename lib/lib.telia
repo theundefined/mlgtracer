@@ -1,6 +1,6 @@
 #!/bin/sh
 progname=`basename $0`
-targets="{ping,traceroute,bgp}.telia.{Amsterdam,Frankfurt,London,Moscow,Paris,Prague,Vienna,Warsaw}"
+targets="{ping,traceroute,bgp}.telia.{Hong_Kong,Amsterdama,Berlin,Bratislava,Cologne,Hamburg,Krakow,Poznan,Frankfurt,London,Moscow,Paris,Prague,Vienna,Warsaw,Ashburn,Chicago,New_York,GRX}"
 
 if [ "$progname" == "lib.telia" -a "$1" == "targets" ]; then
 	echo $targets
@@ -22,8 +22,11 @@ case "$1" in
 esac
 service=`echo $progname |cut -f 1 -d .`
 [ "$service" == "traceroute" ] && service=trace
-router=`echo $progname |cut -f 3 -d .`
+router=`echo $progname |cut -f 3 -d . |tr '_' ' '`
 
-wget -q "http://looking-glass.telia.net/cgi-bin/lg.cgi?query=$service&protocol=IPv4&addr=$address&router=$router"  -O - \
+wget -q \
+	--referer "http://looking-glass.telia.net/" \
+	--post-data "query=$service&protocol=IPv4&addr=$address&router=$router" \
+	http://looking-glass.telia.net -O - \
 	| sed -e's/<[^>]*>//g' | \
 	grep -A 100 "Router: "
