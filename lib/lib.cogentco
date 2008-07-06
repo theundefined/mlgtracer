@@ -1,6 +1,6 @@
 #!/bin/sh
 progname=`basename $0`
-targets="{ping,traceroute}.cogentco.{Amsterdam,Frankfurt,London,LosAngeles,Madrit,Paris,Stockholm,Washington}"
+targets="{ping,traceroute}.cogentco.{Amsterdam,Frankfurt,London,LosAngeles,Paris,Stockholm,Washington}"
 
 if [ "$progname" == "lib.cogentco" -a "$1" == "targets" ]; then
 	echo $targets
