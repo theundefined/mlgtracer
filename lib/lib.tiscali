@@ -24,6 +24,6 @@ service=`echo $progname |cut -f 1 -d .`
 router=`echo $progname |cut -f 3 -d .`
 [ "$service" == "traceroute" ] && service=trace
 
-wget -q --post-data "query=$service&router=$router.ip.tiscali.net:juniper&args=$address" http://www.ip.tiscali.net/lg/lg.cgi -O - | \
+wget -q --post-data "query=$service&router=$router.ip.tiscali.net:juniper&args=$address" http://www.ip.tiscali.net/lg/cgi/lg.cgi -O - | \
 	sed -e's/<[^>]*>//g'
 
