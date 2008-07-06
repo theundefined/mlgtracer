@@ -1,6 +1,7 @@
 #!/bin/sh
 progname=`basename $0`
-targets="{ping,traceroute,bgp,bgpre}.dtag.{Munich,Stuttgart}"
+targets="{ping,traceroute,bgp,bgpre}.dtag.Frankfurt"
+site="f-lga1.f.de.net.dtag.de"
 
 if [ "$progname" == "lib.dtag" -a "$1" == "targets" ]; then
 	echo $targets
@@ -13,7 +14,7 @@ case "$1" in
         exit
         ;;
         url)
-        echo https://s-lga1.s.de.net.dtag.de/index.php
+        echo https://$site/index.php
         exit
         ;;
         *)
@@ -26,6 +27,9 @@ case $router in
 	Munich)
 	routerip=194.25.0.210
 	;;
+	Frankfurt)
+	routerip=194.25.0.218
+	;;
 	Stuttgart)
 	routerip=194.25.0.206
 	;;
@@ -34,16 +38,30 @@ esac;
 (
 case $service in
 	traceroute)
-	wget -q --referer=https://s-lga1.s.de.net.dtag.de/tools/traceroute.php "https://s-lga1.s.de.net.dtag.de/tools/traceroute.php?destinationIP=$address&hopCount=20&server=$routerip&exec=Execute" -O -
+	wget -q \
+		--referer=https://$site/tools/traceroute.php \
+		--no-check-certificate \
+		"https://$site/tools/traceroute.php?destinationIP=$address&hopCount=20&server=$routerip&exec=Execute" -O -
 	;;
 	ping)
-	wget -q --referer=https://s-lga1.s.de.net.dtag.de/tools/ping.php "https://s-lga1.s.de.net.dtag.de/tools/ping.php?host=$address&count=10&server=$routerip&exec=Execute" -O -
+	wget -q \
+		--referer=https://$site/tools/ping.php \
+		--no-check-certificate \
+		"https://$site/tools/ping.php?host=$address&count=10&server=$routerip&exec=Execute" -O -
 	;;
 	bgp)
-	wget -q --referer=https://s-lga1.s.de.net.dtag.de/tools/lg.php --post-data="query=ip bgp&para=$address&server=$routerip&submit=Execute" https://s-lga1.s.de.net.dtag.de/tools/lg.php -O -
+	wget -q \
+		--referer=https://$site/tools/lg.php \
+		--no-check-certificate \
+		--post-data="query=ip bgp&para=$address&server=$routerip&submit=Execute" \
+		https://$site/tools/lg.php -O -
 	;;
 	bgpre)
-	wget -q --referer=https://s-lga1.s.de.net.dtag.de/tools/lg.php --post-data="query=ip bgp regexp&para=$address&server=$routerip&submit=Execute" https://s-lga1.s.de.net.dtag.de/tools/lg.php -O -
+	wget -q \
+		--referer=https://$site/tools/lg.php \
+		--no-check-certificate \
+		--post-data="query=ip bgp regexp&para=$address&server=$routerip&submit=Execute" \
+		https://$site/tools/lg.php -O -
 	;;
 esac
 ) | \
