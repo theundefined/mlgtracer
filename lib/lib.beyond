@@ -1,0 +1,32 @@
+#!/bin/sh
+progname=`basename $0`
+targets="{bgp,bgpre}.beyond.router"
+
+if [ "$progname" == "lib.beyond" -a "$1" == "targets" ]; then
+	echo $targets
+	exit
+fi
+
+case "$1" in
+        as)
+        echo 31229
+        exit
+        ;;
+        url)
+        echo http://lg.beyond.pl/
+        exit
+        ;;
+        *)
+        address=$1
+        ;;
+esac
+service=`echo $progname |cut -f 1 -d .`
+routername=Datacenter
+
+[ $service == "bgpre" ] && service="bgp-regexp"
+
+wget -q \
+	--post-data "query=$service&router=$routername&protocol=IPv4&addr=$address" \
+	http://lg.beyond.pl/lg/  -O - \
+	| sed -e's/<[^>]*>//g' -e 's@&gt;@>@g'
+
