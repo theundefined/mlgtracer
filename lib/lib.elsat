@@ -25,7 +25,7 @@ service=`echo $progname |cut -f 1 -d .`
 [ "$service" == "bgp" ] && command="-A"
 [ "$service" == "traceroute" ] && command="-B"
 
-wget -q "http://mtr.elsat.net.pl/index.php?host=$address&pings=3" -O - | \
+wget -q "http://mtr.elsat.net.pl/?host=$address&pings=3" -O - | \
 	vilistextum - - | \
 	grep -v ^$ | \
 	grep $command 100 "BGP routing table entry"

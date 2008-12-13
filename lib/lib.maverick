@@ -1,6 +1,6 @@
 #!/bin/sh
 progname=`basename $0`
-targets="{bgp,bgpre}.maverick.router"
+targets="{bgp,traceroute,ping}.maverick.router"
 
 if [ "$progname" == "lib.maverick" -a "$1" == "targets" ]; then
 	echo $targets
@@ -22,8 +22,9 @@ case "$1" in
 esac
 
 service=`echo $progname |cut -f 1 -d .`
-[ "$service" == "bgpre" ] && service=bgp && address="regexp $address"
 [ "$service" == "bgp" ] && query=40
+[ "$service" == "traceroute" ] && query=45
+[ "$service" == "ping" ] && query=60
 router=`echo $progname |cut -f 3 -d .`
 
 routerid=10

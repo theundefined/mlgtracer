@@ -1,6 +1,6 @@
 #!/bin/sh
 progname=`basename $0`
-targets="{bgp,bgpre}.plix.waw-rs{1,2}"
+targets="{bgp,ping,traceroute}.plix.rs{1,2}"
 
 if [ "$progname" == "lib.plix" -a "$1" == "targets" ]; then
 	echo $targets
@@ -9,11 +9,11 @@ fi
 
 case "$1" in
         as)
-        echo 34209
+        echo 8545
         exit
         ;;
         url)
-        echo http://www.pl-ix.pl/tools.asp
+        echo http://www.pl-ix.pl/pl/lg
         exit
         ;;
         *)
@@ -22,22 +22,35 @@ case "$1" in
 esac
 service=`echo $progname |cut -f 1 -d .`
 case $service in
-	bgp) query=0
+	bgp) query=1
 	;;
-	bgpre) query=2
+	traceroute) query=7
+	;;
+	ping) query=8
 	;;
 esac
 
 routername=`echo $progname |cut -f 3 -d .`
 
-case "$routername" in
-	waw-rs1)router=2
-	;;
-	waw-rs2)router=3
-	;;
-esac
+router=$routername.pl-ix.pl
 
-wget -q --post-data "addr=$address&query=$query&action=dobgp&m1=7&router=$router" http://www.pl-ix.pl/tools.asp -O - | \
-	grep -A 100 flags | grep -B 100 '/' |grep -B 100 SUPPORT |head -n -8 |\
-	sed -e's/<[^>]*>//g'
+tmpfile1=`mktemp /tmp/tmpfile1.XXXXXX`
+tmpfile2=`mktemp /tmp/tmpfile2.XXXXXX`
 
+wget -q \
+	--keep-session-cookies \
+	--save-cookies $tmpfile1 \
+	-O $tmpfile2 \
+	http://www.pl-ix.pl/pl/lg
+
+authtook=`grep authenticity_token $tmpfile2 |sed -e 's@.*value="@@g' |cut -f 1 -d '"'`
+
+wget -q \
+	--keep-session-cookies \
+	--load-cookies $tmpfile1 \
+	--post-data "authenticity_token=$authtook&form[router]=$router&form[query]=$query&form[arg]=$address&commit=Wy¶wietl" \
+	http://www.pl-ix.pl/pl/lg/fetch -O -
+
+echo
+
+rm -f $tmpfile1 $tmpfile2

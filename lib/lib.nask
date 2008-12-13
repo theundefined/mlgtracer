@@ -1,6 +1,7 @@
 #!/bin/sh
 progname=`basename $0`
 targets="{traceroute,bgp,bgpre}.nask.router"
+exit 0 # nask lg don't work
 
 if [ "$progname" == "lib.nask" -a "$1" == "targets" ]; then
 	echo $targets
