@@ -40,7 +40,7 @@ install -d $RPM_BUILD_ROOT{%{_datadir}/%{name}/lib,%{_bindir}}
 
 cp -r lib/lib.* $RPM_BUILD_ROOT%{_datadir}/%{name}/lib
 
-%{__make} LG-links
+%{__make} LG-list
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -59,6 +59,9 @@ rm -rf $RPM_BUILD_ROOT
 All persons listed below can be reached at <cvs_login>@pld-linux.org
 
 $Log$
+Revision 1.3  2008/12/13 00:48:50  undefine
+- build lg-links too
+
 Revision 1.2  2008/02/04 15:38:37  undefine
 - list of all looking glassess
 
